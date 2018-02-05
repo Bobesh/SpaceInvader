@@ -21,6 +21,7 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private Handler handler;
 	private HUD hud;
+	private StarSpawner spawner;
 	
 	private SpriteSheet ss;
 	private BufferedImage sprite_sheet = null;
@@ -33,6 +34,8 @@ public class Game extends Canvas implements Runnable{
 		
 		new Window(WIDTH, HEIGHT, "Space invaders", this);
 		start();
+		
+		spawner = new StarSpawner(handler, this);
 		
 		this.addKeyListener(new KeyInput(hud, handler));
 		
@@ -48,8 +51,9 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick(){
-		hud.tick();
+		spawner.tick();
 		handler.tick();
+		hud.tick();
 		
 	}
 	
