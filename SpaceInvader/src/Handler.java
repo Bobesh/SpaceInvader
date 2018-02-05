@@ -14,6 +14,9 @@ public class Handler {
 			if(tempObject.getId() == ID.PlayerBullet && tempObject.getY() < 75){
 				removeObject(tempObject);
 			}
+			else if(tempObject.getId() == ID.EnemyBullet && tempObject.getY() > 900){
+				removeObject(tempObject);
+			}
 			else{
 				tempObject.tick();
 			}

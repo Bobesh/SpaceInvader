@@ -3,6 +3,7 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class BasicInvader extends GameObject{
 	
@@ -13,6 +14,19 @@ public class BasicInvader extends GameObject{
 	private boolean lowest = true;
 	private boolean charged = true;
 	
+	Random r = new Random();
+	private int shootTimer = r.nextInt(200);
+	
+
+	public int getShootTimer() {
+		return shootTimer;
+	}
+
+
+	public void setShootTimer(int shootTimer) {
+		this.shootTimer = shootTimer;
+	}
+
 
 	public BasicInvader(int x, int y, ID id, Handler handler, Game game, SpriteSheet ss) {
 		super(x, y, id);
@@ -37,6 +51,18 @@ public class BasicInvader extends GameObject{
 		}
 		getDestroied();
 		isLowest();
+		isCharged();
+		if(lowest && charged){
+			for(int i = 0; i < handler.object.size(); i++){
+				GameObject tempObject = handler.object.get(i);
+				if(tempObject.getId() == ID.Player){
+					if(tempObject.getX() + 64 > getX() && tempObject.getX() < getX() + 32){
+						shoot();
+						System.out.println("Shooting");
+					}
+				}
+			}
+		}
 	}
 
 
@@ -65,15 +91,35 @@ public class BasicInvader extends GameObject{
 		for(int i = 0; i < handler.object.size(); i++){
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.BasicInvader){ // it is enemy
-				if(tempObject.getX() > getX() - 16 && tempObject.getX() < getX() + 16){ // over gun
-					if(tempObject.getY() > getY()){ // under me
-						lowest = false;
-						System.out.println("I am not lowest");
-					}
-				
-				}
+				if(tempObject.getX() > getX() - 16 && tempObject.getX() < getX() + 16 && tempObject.getY() > getY()){ // over gun // under me
+					setLowest(false);
+				}else setLowest(true);
 			}
 		}
+	}
+	
+	private void isCharged(){
+		if(shootTimer > 0) shootTimer --;
+		else{
+			charged = true;
+		}
+	}
+	
+	private void shoot(){
+		handler.addObject(new EnemyBullet(x + 15, y + 32, ID.EnemyBullet));
+		setShootTimer(r.nextInt(200));
+		setCharged(false);
+		
+	}
+
+
+	public void setLowest(boolean lowest) {
+		this.lowest = lowest;
+	}
+
+
+	public void setCharged(boolean charged) {
+		this.charged = charged;
 	}
 
 }
