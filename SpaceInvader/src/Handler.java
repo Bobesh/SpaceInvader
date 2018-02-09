@@ -11,16 +11,9 @@ public class Handler {
 	public void tick(){
 		for(int i = 0; i < object.size(); i++){
 			GameObject tempObject = object.get(i);
-			if(tempObject.getId() == ID.PlayerBullet && tempObject.getY() < 75){
-				removeObject(tempObject);
-			}
-			else if(tempObject.getId() == ID.EnemyBullet && tempObject.getY() > 900){
-				removeObject(tempObject);
-			}
-			else{
-				tempObject.tick();
-			}
+			tempObject.tick();
 		}
+		System.out.println(object.size());
 	}
 	
 	public void render(Graphics g){

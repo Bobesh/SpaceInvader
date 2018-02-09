@@ -6,6 +6,8 @@ public class Shield extends GameObject{
 
 	
 	private Handler handler;
+	
+	
 	public Shield(int x, int y, ID id, Handler handler) {
 		super(x, y, id);
 		this.handler = handler;
@@ -13,14 +15,13 @@ public class Shield extends GameObject{
 
 
 	public void tick() {
-		getDestroied();
 	}
 
 
 	public void render(Graphics g) {
 		g.setColor(Color.yellow);
-		g.drawRect(x, y, 5, 5);
-		g.fillRect(x, y, 5, 5);
+		g.drawRect(x, y, 20, 20);
+		g.fillRect(x, y, 20, 20);
 		
 	}
 
@@ -29,16 +30,5 @@ public class Shield extends GameObject{
 		return new Rectangle(x, y, 5, 5);
 	}
 	
-	private void getDestroied(){
-		for(int i = 0; i < handler.object.size(); i++ ){
-			GameObject tempObject = handler.object.get(i);
-			if(tempObject.getId() == ID.EnemyBullet || tempObject.getId() == ID.PlayerBullet){
-				if(tempObject.getBounds().intersects(getBounds())){
-					handler.removeObject(this);
-					handler.removeObject(tempObject);
-				}
-			}
-		}
-	}
 
 }

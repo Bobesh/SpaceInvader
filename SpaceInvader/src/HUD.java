@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 public class HUD {
 	
-	private int maxPlayerTimer = 100;
+	private int maxPlayerTimer = 4;
 	private int playerTimer = maxPlayerTimer;
 	private int enemyTimer = 0;
 	

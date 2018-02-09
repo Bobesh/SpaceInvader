@@ -50,7 +50,7 @@ public class BasicInvader extends GameObject{
 			velX *= -1.5;
 			animation.setSpeed(animation.getSpeed() - 1);
 		}
-		getDestroied();
+		
 		isLowest();
 		isCharged();
 		if(lowest && charged){
@@ -59,7 +59,7 @@ public class BasicInvader extends GameObject{
 				if(tempObject.getId() == ID.Player){
 					if(tempObject.getX() + 64 > getX() && tempObject.getX() < getX() + 32){
 						shoot();
-						System.out.println("Shooting");
+						//System.out.println("Shooting");
 					}
 				}
 			}
@@ -76,17 +76,6 @@ public class BasicInvader extends GameObject{
 		return new Rectangle(x, y, 32, 32);
 	}
 	
-	private void getDestroied(){
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			if(tempObject.getId() == ID.PlayerBullet){
-				if(getBounds().intersects(tempObject.getBounds())){
-					handler.removeObject(this);
-					handler.removeObject(tempObject);
-				}
-			}
-		}
-	}
 	
 	private void isLowest(){
 		for(int i = 0; i < handler.object.size(); i++){
@@ -107,7 +96,7 @@ public class BasicInvader extends GameObject{
 	}
 	
 	private void shoot(){
-		handler.addObject(new EnemyBullet(x + 15, y + 32, ID.EnemyBullet));
+		handler.addObject(new Bullet(x + 15, y + 32, ID.EnemyBullet, BulletID.EnemyBullet, handler));
 		setShootTimer(r.nextInt(200));
 		setCharged(false);
 		

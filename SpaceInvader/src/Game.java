@@ -53,6 +53,16 @@ public class Game extends Canvas implements Runnable{
 		handler.addObject(new BasicInvader(200, 100 - 300, ID.BasicInvader, handler, this, ss));
 		handler.addObject(new BasicInvader(300, 200 - 300, ID.BasicInvader, handler, this, ss));
 		
+		//handler.addObject(new Shield(100, 770, ID.Shield, handler));
+		//handler.addObject(new Shield(120, 770, ID.Shield, handler));
+		//handler.addObject(new Shield(140, 770, ID.Shield, handler));
+		//handler.addObject(new Shield(100, 750, ID.Shield, handler));
+		//handler.addObject(new Shield(120, 750, ID.Shield, handler));
+		//handler.addObject(new Shield(140, 750, ID.Shield, handler));
+		handler.addObject(new Shield(100, 730, ID.Shield, handler));
+		handler.addObject(new Shield(120, 730, ID.Shield, handler));
+		handler.addObject(new Shield(140, 730, ID.Shield, handler));
+		
 		
 		
 		//set velY
