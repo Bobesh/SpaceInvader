@@ -17,6 +17,7 @@ public class Game extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = 2747436608876328919L;
 	public final int WIDTH = 1280, HEIGHT = 960 ;
+	
 	private boolean running = false;
 	private Thread thread;
 	private Handler handler;
@@ -26,34 +27,80 @@ public class Game extends Canvas implements Runnable{
 	private SpriteSheet ss;
 	private BufferedImage sprite_sheet = null;
 	
+	private boolean isReady = false;
+	
 	
 	public Game(){
 		
+		spawner = new StarSpawner();
 		handler = new Handler();
 		hud = new HUD();
 		
 		new Window(WIDTH, HEIGHT, "Space invaders", this);
 		start();
 		
-		spawner = new StarSpawner(handler, this);
+		spawner = new StarSpawner();
 		
-		this.addKeyListener(new KeyInput(hud, handler));
+		//this.addKeyListener(new KeyInput(hud, handler));
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 		sprite_sheet = loader.loadImage("/monsters.png");
 		ss = new SpriteSheet(sprite_sheet);
 		
-		handler.addObject(new Player(600, 820, ID.Player, this));
-		handler.addObject(new BasicInvader(200, 200, ID.BasicInvader, handler, this, ss));
-		handler.addObject(new BasicInvader(300, 300, ID.BasicInvader, handler, this, ss));
+		
+		//generate them outside the window
+		handler.addObject(new Player(600, 820 + 300, ID.Player, this, handler));
+		handler.addObject(new BasicInvader(200, 100 - 300, ID.BasicInvader, handler, this, ss));
+		handler.addObject(new BasicInvader(300, 200 - 300, ID.BasicInvader, handler, this, ss));
+		
+		
+		
+		//set velY
+		for(int i = 0; i < handler.object.size(); i++){
+			GameObject tempObject = handler.object.get(i);
+			if(tempObject.getId() == ID.Player){
+				tempObject.setVelX(0);
+				tempObject.setVelY(-2);
+			}
+			else if (tempObject.getId() == ID.BasicInvader){
+				tempObject.setVelX(0);
+				tempObject.setVelY(2);
+			}
+		}
 		
 		
 	}
 	
 	public void tick(){
-		spawner.tick();
-		handler.tick();
-		hud.tick();
+		if(!isReady){
+			
+			spawner.tick();
+			handler.tick();
+			hud.tick();
+			
+			for(int i = 0; i < handler.object.size(); i++){
+				GameObject tempObject = handler.object.get(i);
+				if(tempObject.getId() == ID.Player){
+					if(tempObject.getY() == 820){
+						isReady = true;
+						this.addKeyListener(new KeyInput(hud, handler));
+						tempObject.setVelY(0);
+						for(int j = 0; j < handler.object.size(); j++){
+							GameObject enemy = handler.object.get(j);
+							if(enemy.getId() == ID.BasicInvader){
+								enemy.setVelX(1);
+								enemy.setVelY(0);
+							}
+						}
+						return;
+					}
+				}
+			}
+		}else{
+			spawner.tick();
+			handler.tick();
+			hud.tick();
+		}
 		
 	}
 	
@@ -69,8 +116,10 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		hud.render(g);
+		spawner.render(g);
 		handler.render(g);
+		hud.render(g);
+		
 		
 		g.dispose();
 		bs.show();

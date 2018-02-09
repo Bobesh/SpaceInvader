@@ -20,6 +20,7 @@ public class Shield extends GameObject{
 	public void render(Graphics g) {
 		g.setColor(Color.yellow);
 		g.drawRect(x, y, 5, 5);
+		g.fillRect(x, y, 5, 5);
 		
 	}
 
@@ -31,9 +32,10 @@ public class Shield extends GameObject{
 	private void getDestroied(){
 		for(int i = 0; i < handler.object.size(); i++ ){
 			GameObject tempObject = handler.object.get(i);
-			if(tempObject.getId() == ID.EnemyBullet){
+			if(tempObject.getId() == ID.EnemyBullet || tempObject.getId() == ID.PlayerBullet){
 				if(tempObject.getBounds().intersects(getBounds())){
 					handler.removeObject(this);
+					handler.removeObject(tempObject);
 				}
 			}
 		}

@@ -43,6 +43,7 @@ public class BasicInvader extends GameObject{
 
 	public void tick() {
 		x += velX;
+		y += velY;
 		animation.runAnimation();
 		if((int) game.clamp(x,  game.WIDTH - 32, 0) != x){
 			y += 32;

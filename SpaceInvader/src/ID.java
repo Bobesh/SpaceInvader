@@ -6,5 +6,6 @@ public enum ID {
 	PlayerBullet,
 	EnemyBullet,
 	BasicInvader,
-	Star;
+	Star,
+	Shield;
 }

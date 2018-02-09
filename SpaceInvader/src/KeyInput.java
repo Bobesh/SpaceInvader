@@ -7,11 +7,13 @@ public class KeyInput extends KeyAdapter{
 	
 	HUD hud;
 	Handler handler;
+	Sound blast;
 	private boolean [] keyDown = new boolean[2]; // 0 = left, 1 = right
 	
 	public KeyInput(HUD hud, Handler handler){
 		this.hud = hud;
 		this.handler = handler;
+		blast = new Sound("/blast.wav");
 		keyDown[0] = false;
 		keyDown[1] = false;
 	}
@@ -31,6 +33,7 @@ public class KeyInput extends KeyAdapter{
 				}
 				if(key == KeyEvent.VK_SPACE){
 					if(hud.getPlayerTimer() == hud.getMaxPlayerTimer()){
+						blast.play();
 						handler.addObject(new PlayerBullet(tempObject.getX()+ 30, tempObject.getY() - 10, ID.PlayerBullet));
 						hud.setPlayerTimer(0);
 					}
