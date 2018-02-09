@@ -27,7 +27,7 @@ public class Shield extends GameObject{
 
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 5, 5);
+		return new Rectangle(x, y, 20, 20);
 	}
 	
 

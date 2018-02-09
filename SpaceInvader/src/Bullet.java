@@ -60,6 +60,9 @@ public class Bullet extends GameObject{
 				}
 			}
 		}
+		if(x < 75 || x > 960){
+			handler.removeObject(this);
+		}
 	}
 	
 
