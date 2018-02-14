@@ -96,7 +96,7 @@ public class BasicInvader extends GameObject{
 	}
 	
 	private void shoot(){
-		handler.addObject(new Bullet(x + 15, y + 32, ID.EnemyBullet, BulletID.EnemyBullet, handler));
+		handler.addObject(new Bullet(x + 15, y + 32, ID.EnemyBullet, handler));
 		setShootTimer(r.nextInt(200));
 		setCharged(false);
 		

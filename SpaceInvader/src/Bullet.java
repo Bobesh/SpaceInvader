@@ -7,17 +7,15 @@ import java.awt.Rectangle;
 public class Bullet extends GameObject{
 	
 	Handler handler;
-	BulletID shooter;
 
-	public Bullet(int x, int y, ID id, BulletID shooter, Handler handler) {
+	public Bullet(int x, int y, ID id, Handler handler) {
 		super(x, y, id);
 		this.handler = handler;
-		this.shooter = shooter;
 		
-		if(shooter == BulletID.EnemyBullet){
-			velY = 10;
-		}else if(shooter == BulletID.PlayerBullet){
-			velY = -10;
+		if(id == ID.EnemyBullet){
+			velY = 20;
+		}else if(id == ID.PlayerBullet){
+			velY = -20;
 		}else{
 			velY = 1;
 			System.out.println("Neplatne ID bullet");
@@ -32,9 +30,9 @@ public class Bullet extends GameObject{
 
 	public void render(Graphics g) {
 		
-		if(shooter == BulletID.EnemyBullet){
+		if(id == ID.EnemyBullet){
 			g.setColor(Color.red);
-		}else if(shooter == BulletID.PlayerBullet){
+		}else if(id == ID.PlayerBullet){
 			g.setColor(Color.green);
 		}else{
 			g.setColor(Color.white);
@@ -60,7 +58,7 @@ public class Bullet extends GameObject{
 				}
 			}
 		}
-		if(x < 75 || x > 960){
+		if(y < 75 || y > 960){
 			handler.removeObject(this);
 		}
 	}

@@ -13,7 +13,6 @@ public class Handler {
 			GameObject tempObject = object.get(i);
 			tempObject.tick();
 		}
-		System.out.println(object.size());
 	}
 	
 	public void render(Graphics g){

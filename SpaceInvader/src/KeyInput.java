@@ -33,9 +33,9 @@ public class KeyInput extends KeyAdapter{
 				}
 				if(key == KeyEvent.VK_SPACE){
 					if(hud.getPlayerTimer() == hud.getMaxPlayerTimer()){
-						blast.play();
-						handler.addObject(new Bullet(tempObject.getX() + 30, tempObject.getY() - 10, ID.PlayerBullet, BulletID.PlayerBullet, handler));
+						handler.addObject(new Bullet(tempObject.getX() + 30, tempObject.getY() - 10, ID.PlayerBullet, handler));
 						hud.setPlayerTimer(0);
+						blast.play();
 					}
 				}
 				

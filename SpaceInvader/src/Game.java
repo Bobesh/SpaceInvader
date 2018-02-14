@@ -27,7 +27,8 @@ public class Game extends Canvas implements Runnable{
 	private SpriteSheet ss;
 	private BufferedImage sprite_sheet = null;
 	
-	private boolean isReady = false;
+	private TextSpawner textSpawner;
+	private STATE gameState = STATE.text;
 	
 	
 	public Game(){
@@ -35,11 +36,12 @@ public class Game extends Canvas implements Runnable{
 		spawner = new StarSpawner();
 		handler = new Handler();
 		hud = new HUD();
+		textSpawner = new TextSpawner();
+		spawner = new StarSpawner();
 		
 		new Window(WIDTH, HEIGHT, "Space invaders", this);
 		start();
 		
-		spawner = new StarSpawner();
 		
 		//this.addKeyListener(new KeyInput(hud, handler));
 		
@@ -48,24 +50,25 @@ public class Game extends Canvas implements Runnable{
 		ss = new SpriteSheet(sprite_sheet);
 		
 		
-		//generate them outside the window
+		
+		//generate handler objects outside the window
 		handler.addObject(new Player(600, 820 + 300, ID.Player, this, handler));
 		handler.addObject(new BasicInvader(200, 100 - 300, ID.BasicInvader, handler, this, ss));
 		handler.addObject(new BasicInvader(300, 200 - 300, ID.BasicInvader, handler, this, ss));
 		
-		//handler.addObject(new Shield(100, 770, ID.Shield, handler));
-		//handler.addObject(new Shield(120, 770, ID.Shield, handler));
-		//handler.addObject(new Shield(140, 770, ID.Shield, handler));
-		//handler.addObject(new Shield(100, 750, ID.Shield, handler));
-		//handler.addObject(new Shield(120, 750, ID.Shield, handler));
-		//handler.addObject(new Shield(140, 750, ID.Shield, handler));
+	    handler.addObject(new Shield(100, 770, ID.Shield, handler));
+		handler.addObject(new Shield(120, 770, ID.Shield, handler));
+		handler.addObject(new Shield(140, 770, ID.Shield, handler));
+		handler.addObject(new Shield(100, 750, ID.Shield, handler));
+		handler.addObject(new Shield(120, 750, ID.Shield, handler));
+		handler.addObject(new Shield(140, 750, ID.Shield, handler));
 		handler.addObject(new Shield(100, 730, ID.Shield, handler));
 		handler.addObject(new Shield(120, 730, ID.Shield, handler));
 		handler.addObject(new Shield(140, 730, ID.Shield, handler));
 		
 		
 		
-		//set velY
+		//set velY for handler objects
 		for(int i = 0; i < handler.object.size(); i++){
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Player){
@@ -82,7 +85,13 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick(){
-		if(!isReady){
+		if(gameState == STATE.text){
+			textSpawner.tick();
+			if(textSpawner.getLastY() < 0){
+				gameState = STATE.arrival;
+			}
+		}
+		else if(gameState == STATE.arrival){
 			
 			spawner.tick();
 			handler.tick();
@@ -92,7 +101,7 @@ public class Game extends Canvas implements Runnable{
 				GameObject tempObject = handler.object.get(i);
 				if(tempObject.getId() == ID.Player){
 					if(tempObject.getY() == 820){
-						isReady = true;
+						gameState = STATE.game;
 						this.addKeyListener(new KeyInput(hud, handler));
 						tempObject.setVelY(0);
 						for(int j = 0; j < handler.object.size(); j++){
@@ -106,7 +115,9 @@ public class Game extends Canvas implements Runnable{
 					}
 				}
 			}
-		}else{
+		}
+		
+		else if (gameState == STATE.game){
 			spawner.tick();
 			handler.tick();
 			hud.tick();
@@ -121,14 +132,20 @@ public class Game extends Canvas implements Runnable{
 			this.createBufferStrategy(3);
 			return;
 		}
-		
+
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		spawner.render(g);
-		handler.render(g);
-		hud.render(g);
+		
+		if(gameState == STATE.text){
+			textSpawner.render(g);
+		}
+		else if(gameState == STATE.game || gameState == STATE.arrival){
+			spawner.render(g);
+			handler.render(g);
+			hud.render(g);
+		}
 		
 		
 		g.dispose();
@@ -196,8 +213,9 @@ public class Game extends Canvas implements Runnable{
 		}
 	}
 	
+	/*
 	public static void main(String[] args){
 		new Game();
 	}
-	
+	*/
 }

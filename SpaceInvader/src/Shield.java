@@ -20,14 +20,14 @@ public class Shield extends GameObject{
 
 	public void render(Graphics g) {
 		g.setColor(Color.yellow);
-		g.drawRect(x, y, 20, 20);
-		g.fillRect(x, y, 20, 20);
+		g.drawRect(x, y, 10, 10);
+		g.fillRect(x, y, 10, 10);
 		
 	}
 
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 20, 20);
+		return new Rectangle(x, y, 10, 10);
 	}
 	
 
