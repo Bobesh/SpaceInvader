@@ -24,11 +24,14 @@ public class Game extends Canvas implements Runnable{
 	private HUD hud;
 	private StarSpawner spawner;
 	
-	private SpriteSheet ss;
-	private BufferedImage sprite_sheet = null;
+	private SpriteSheet ss_enemy;
+	private SpriteSheet ss_player;
+	
+	private BufferedImage sprite_sheet_enemy = null;
+	private BufferedImage sprite_sheet_player = null;
 	
 	private TextSpawner textSpawner;
-	private STATE gameState = STATE.text;
+	public STATE gameState = STATE.text;
 	
 	
 	public Game(){
@@ -43,18 +46,24 @@ public class Game extends Canvas implements Runnable{
 		start();
 		
 		
-		//this.addKeyListener(new KeyInput(hud, handler));
+		this.addKeyListener(new KeyInput(hud, handler, this));
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
-		sprite_sheet = loader.loadImage("/monsters.png");
-		ss = new SpriteSheet(sprite_sheet);
+		
+		sprite_sheet_enemy = loader.loadImage("/monsters.png");
+		ss_enemy = new SpriteSheet(sprite_sheet_enemy);
+		
+		sprite_sheet_player = loader.loadImage("/ship.png");
+		ss_player = new SpriteSheet(sprite_sheet_player);
+		
+		
 		
 		
 		
 		//generate handler objects outside the window
-		handler.addObject(new Player(600, 820 + 300, ID.Player, this, handler));
-		handler.addObject(new BasicInvader(200, 100 - 300, ID.BasicInvader, handler, this, ss));
-		handler.addObject(new BasicInvader(300, 200 - 300, ID.BasicInvader, handler, this, ss));
+		handler.addObject(new Player(600, 820 + 300, ID.Player, ss_player, hud, this, handler));
+		handler.addObject(new BasicInvader(200, 100 - 300, ID.BasicInvader, handler, this, ss_enemy));
+		handler.addObject(new BasicInvader(300, 200 - 300, ID.BasicInvader, handler, this, ss_enemy));
 		
 	    handler.addObject(new Shield(100, 770, ID.Shield, handler));
 		handler.addObject(new Shield(120, 770, ID.Shield, handler));
@@ -102,7 +111,6 @@ public class Game extends Canvas implements Runnable{
 				if(tempObject.getId() == ID.Player){
 					if(tempObject.getY() == 820){
 						gameState = STATE.game;
-						this.addKeyListener(new KeyInput(hud, handler));
 						tempObject.setVelY(0);
 						for(int j = 0; j < handler.object.size(); j++){
 							GameObject enemy = handler.object.get(j);

@@ -60,7 +60,7 @@ public class HUD {
 	
 	private void playerTiming(){
 		if(playerTimer < maxPlayerTimer){
-			playerTimer += 5;
+			playerTimer += 1;
 		}
 	}
 
